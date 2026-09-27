@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 
-app = FastAPI()
+from model import *
+
+app = FastAPI(title="PetMatch API")
 
 
 @app.get("/")
 def root():
-    return {"message": "PetMatch API funcionando"}
+    return {"message": "PetMatch API is running"}
