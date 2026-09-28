@@ -8,7 +8,8 @@ from controller.animal_controller import (
     get_by_id,
     create_animal,
     update_animal,
-    delete_animal
+    delete_animal,
+    delete_animal_cascade
 )
 from database.database import get_db
 from schema.animal_schema import AnimalCreate,AnimalUpdate, AnimalResponse
@@ -75,3 +76,12 @@ def remove_animal(
     db: Session = Depends(get_db)
 ):
     delete_animal(db, animal_id)
+@router.delete(
+    "/{animal_id}/cascade",
+    status_code=status.HTTP_204_NO_CONTENT
+)
+def remove_animal_cascade(
+    animal_id: int,
+    db: Session = Depends(get_db)
+):
+    delete_animal_cascade(db, animal_id)

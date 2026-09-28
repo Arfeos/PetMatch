@@ -8,7 +8,8 @@ from controller.adopter_controller import (
     get_by_id,
     create_adopter,
     update_adopter,
-    delete_adopter
+    delete_adopter,
+    delete_adopter_cascade
 )
 from database.database import get_db
 from schema.adopter_schema import AdopterCreate, AdopterUpdate, AdopterResponse
@@ -81,3 +82,13 @@ def remove_adopter(
     db: Session = Depends(get_db)
 ):
     delete_adopter(db, adopter_id)
+
+@router.delete(
+    "/{adopter_id}/cascade",
+    status_code=status.HTTP_204_NO_CONTENT
+)
+def remove_adopter_cascade(
+    adopter_id: int,
+    db: Session = Depends(get_db)
+):
+    delete_adopter_cascade(db, adopter_id)

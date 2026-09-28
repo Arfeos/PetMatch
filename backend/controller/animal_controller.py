@@ -181,3 +181,36 @@ def delete_animal(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Database error in deleting animal: {str(error)}"
         )
+def delete_animal_cascade(
+    db: Session,
+    animal_id: int
+) -> None:
+
+    animal = db.query(Animal).filter(
+        Animal.id == animal_id
+    ).first()
+
+    if animal is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Animal not found"
+        )
+
+    try:
+        db.query(AdoptionInterest).filter(
+            AdoptionInterest.animal_id == animal_id
+        ).delete(
+            synchronize_session=False
+        )
+
+        db.delete(animal)
+
+        db.commit()
+
+    except SQLAlchemyError as error:
+        db.rollback()
+
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Database error in cascading animal deletion: {str(error)}"
+        )

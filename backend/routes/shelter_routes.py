@@ -8,7 +8,8 @@ from controller.shelter_controller import (
     get_by_id,
     create_shelter,
     update_shelter,
-    delete_shelter
+    delete_shelter,
+    delete_shelter_cascade
 )
 from database.database import get_db
 from schema.shelter_schema import ShelterCreate, ShelterResponse, ShelterUpdate
@@ -74,3 +75,13 @@ def remove_shelter(
     db: Session = Depends(get_db)
 ):
     delete_shelter(db, shelter_id)
+
+@router.delete(
+    "/{shelter_id}/cascade",
+    status_code=status.HTTP_204_NO_CONTENT
+)
+def remove_shelter_cascade(
+    shelter_id: int,
+    db: Session = Depends(get_db)
+):
+    delete_shelter_cascade(db, shelter_id)

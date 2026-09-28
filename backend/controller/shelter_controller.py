@@ -6,7 +6,8 @@ from sqlalchemy.orm import Session
 
 from model.shelter_model import Shelter
 from schema.shelter_schema import ShelterCreate, ShelterUpdate
-
+from model.animal_model import Animal
+from model.adoption_interest_model import AdoptionInterest
 
 def get_all(
     db: Session,
@@ -126,6 +127,17 @@ def delete_shelter(
             detail="Shelter not found"
         )
 
+    # Check if the shelter has animals
+    animal = db.query(Animal).filter(
+        Animal.shelter_id == shelter_id
+    ).first()
+
+    if animal is not None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Cannot delete a shelter with animals"
+        )
+
     try:
         db.delete(shelter)
         db.commit()
@@ -136,4 +148,45 @@ def delete_shelter(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Database error in deleting shelter: {str(error)}"
+        )
+def delete_shelter_cascade(
+    db: Session,
+    shelter_id: int
+) -> None:
+
+    shelter = db.query(Shelter).filter(
+        Shelter.id == shelter_id
+    ).first()
+
+    if shelter is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Shelter not found"
+        )
+
+    try:
+        animals = db.query(Animal).filter(
+            Animal.shelter_id == shelter_id
+        ).all()
+
+        for animal in animals:
+
+            db.query(AdoptionInterest).filter(
+                AdoptionInterest.animal_id == animal.id
+            ).delete(
+                synchronize_session=False
+            )
+
+            db.delete(animal)
+
+        db.delete(shelter)
+
+        db.commit()
+
+    except SQLAlchemyError as error:
+        db.rollback()
+
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Database error in cascading shelter deletion: {str(error)}"
         )
