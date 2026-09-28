@@ -13,7 +13,6 @@ from controller.shelter_controller import (
 from database.database import get_db
 from schema.shelter_schema import ShelterCreate, ShelterResponse, ShelterUpdate
 
-# Shelter
 router = APIRouter(
     prefix="/shelters",
     tags=["Shelters"]
