@@ -1,10 +1,9 @@
 from fastapi import FastAPI
-
-from model import *
-
-app = FastAPI(title="PetMatch API")
-
-
+from routes.shelter_routes import router as shelter_router
+app = FastAPI(
+    title="PetMatch API"
+)
+app.include_router(shelter_router)
 @app.get("/")
 def root():
     return {"message": "PetMatch API is running"}

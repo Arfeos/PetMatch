@@ -1,5 +1,5 @@
 from typing import Optional
-from datetime import date
+from datetime import date as Date
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -20,7 +20,7 @@ class AdoptionInterestBase(BaseModel):
         examples=[1]
     )
 
-    date: date = Field(
+    date: Date = Field(
         ...,
         description="Date of the adoption interest",
         examples=["2026-09-27"]
