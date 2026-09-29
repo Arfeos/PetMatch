@@ -1,10 +1,19 @@
 import {
     getAnimals,
     getShelters,
+    getAdopters,
     createAnimal,
     updateAnimal,
     deleteAnimal,
-    deleteAnimalCascade
+    deleteAnimalCascade,
+    createAdopter,
+    updateAdopter,
+    deleteAdopter,
+    deleteAdopterCascade,
+    createShelter,
+    updateShelter,
+    deleteShelter,
+    deleteShelterCascade
 } from "./api.js";
 
 
@@ -19,7 +28,7 @@ import {
 let shelters = [];
 
 let selectedAnimalId = null;
-
+let selectedAdopterId = null;
 const animalList = document.querySelector(
     "#animal-list"
 );
@@ -59,7 +68,47 @@ const mainMenu = document.querySelector(
     "#main-menu"
 );
 
+const adopterList =
+    document.querySelector("#adopter-list");
 
+const adopterForm =
+    document.querySelector("#adopter-form");
+
+const editAdopterForm =
+    document.querySelector("#edit-adopter-form");
+
+const openCreateAdopterButton =
+    document.querySelector("#open-create-adopter");
+
+const confirmDeleteAdopterButton =
+    document.querySelector("#confirm-delete-adopter");
+
+const confirmCascadeDeleteAdopterButton =
+    document.querySelector(
+        "#confirm-cascade-delete-adopter"
+    );
+let selectedShelterId = null;
+
+const shelterList =
+    document.querySelector("#shelter-list");
+
+const shelterForm =
+    document.querySelector("#shelter-form");
+
+const editShelterForm =
+    document.querySelector("#edit-shelter-form");
+
+const openCreateShelterButton =
+    document.querySelector("#open-create-shelter");
+
+const confirmDeleteShelterButton =
+    document.querySelector("#confirm-delete-shelter");
+
+const confirmCascadeDeleteShelterButton =
+    document.querySelector(
+        "#confirm-cascade-delete-shelter"
+    );
+loadData();
 
 setupDialogButtons();
 
@@ -153,11 +202,41 @@ const menuLinks = document.querySelectorAll(
     "#main-menu a"
 );
 
+const pageSections = document.querySelectorAll(
+    ".page-section"
+);
+
 menuLinks.forEach(link => {
 
     link.addEventListener(
         "click",
-        () => {
+        event => {
+
+            event.preventDefault();
+
+            const sectionId =
+                link.dataset.section;
+
+            pageSections.forEach(section => {
+
+                section.classList.remove(
+                    "active"
+                );
+
+            });
+
+            const selectedSection =
+                document.querySelector(
+                    `#${sectionId}`
+                );
+
+            if (selectedSection) {
+
+                selectedSection.classList.add(
+                    "active"
+                );
+
+            }
 
             mainMenu.classList.remove(
                 "menu-open"
@@ -167,14 +246,57 @@ menuLinks.forEach(link => {
                 "aria-expanded",
                 "false"
             );
+
         }
     );
 
 });
-loadData();
 
 
+async function loadData() {
 
+    try {
+
+        shelters = await getShelters();
+
+        populateShelterSelects();
+
+        await loadAnimals();
+
+        await loadAdopters();
+        
+        await loadShelters();
+
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Error",
+            "Unable to load PetMatch data."
+        );
+    }
+}
+async function loadShelters() {
+
+    try {
+
+        shelters = await getShelters();
+
+        populateShelterSelects();
+
+        renderShelters(shelters);
+
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Error",
+            "Unable to load shelters."
+        );
+    }
+}
 async function loadAnimals() {
 
     try {
@@ -193,18 +315,13 @@ async function loadAnimals() {
         );
     }
 }
-
-async function loadData() {
+async function loadAdopters() {
 
     try {
 
-        shelters = await getShelters();
+        const adopters = await getAdopters();
 
-        populateShelterSelects();
-
-        const animals = await getAnimals();
-
-        renderAnimals(animals);
+        renderAdopters(adopters);
 
     } catch (error) {
 
@@ -212,10 +329,11 @@ async function loadData() {
 
         showMessage(
             "Error",
-            "Unable to load PetMatch data."
+            "Unable to load adopters."
         );
     }
 }
+
 
 
 function renderAnimals(animals) {
@@ -743,5 +861,939 @@ editAnimalForm.addEventListener(
                 message
             );
         }
+    }
+);
+function renderAdopters(adopters) {
+
+    adopterList.innerHTML = "";
+
+    if (adopters.length === 0) {
+
+        adopterList.innerHTML = `
+            <p>
+                There are no adopters registered yet.
+            </p>
+        `;
+
+        return;
+    }
+
+
+    adopters.forEach(adopter => {
+
+        const article =
+            document.createElement("article");
+
+        article.classList.add("card");
+
+
+        article.innerHTML = `
+
+            <header class="card-header">
+
+                <h4>
+                    ${adopter.name}
+                </h4>
+
+            </header>
+
+
+            <dl>
+
+                <div>
+                    <dt>Email</dt>
+                    <dd>${adopter.email}</dd>
+                </div>
+
+                <div>
+                    <dt>Phone</dt>
+                    <dd>${adopter.phone}</dd>
+                </div>
+
+            </dl>
+
+
+            <footer class="card-actions">
+
+                <button
+                    type="button"
+                    class="primary-button edit-adopter-button"
+                    data-id="${adopter.id}"
+                >
+                    Edit
+                </button>
+
+                <button
+                    type="button"
+                    class="secondary-button delete-adopter-button"
+                    data-id="${adopter.id}"
+                >
+                    Delete
+                </button>
+
+                <button
+                    type="button"
+                    class="danger-button cascade-adopter-button"
+                    data-id="${adopter.id}"
+                >
+                    Delete cascade
+                </button>
+
+            </footer>
+        `;
+
+
+        adopterList.appendChild(article);
+
+    });
+
+
+    setupAdopterButtons();
+}
+function setupAdopterButtons() {
+
+    const editButtons =
+        document.querySelectorAll(
+            ".edit-adopter-button"
+        );
+
+    const deleteButtons =
+        document.querySelectorAll(
+            ".delete-adopter-button"
+        );
+
+    const cascadeButtons =
+        document.querySelectorAll(
+            ".cascade-adopter-button"
+        );
+
+
+    editButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const adopterId =
+                    Number(button.dataset.id);
+
+                openEditAdopterDialog(
+                    adopterId
+                );
+
+            }
+        );
+
+    });
+
+
+    deleteButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                selectedAdopterId =
+                    button.dataset.id;
+
+                openDialog(
+                    "delete-adopter-dialog"
+                );
+
+            }
+        );
+
+    });
+
+
+    cascadeButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                selectedAdopterId =
+                    button.dataset.id;
+
+                openDialog(
+                    "cascade-delete-adopter-dialog"
+                );
+
+            }
+        );
+
+    });
+}
+async function openEditAdopterDialog(adopterId) {
+
+    try {
+
+        const adopters = await getAdopters();
+
+        const adopter = adopters.find(
+            adopter => adopter.id === adopterId
+        );
+
+        if (!adopter) {
+
+            showMessage(
+                "Error",
+                "Adopter not found."
+            );
+
+            return;
+        }
+
+        selectedAdopterId = adopterId;
+
+        document.querySelector(
+            "#edit-adopter-name"
+        ).value = adopter.name;
+
+        document.querySelector(
+            "#edit-adopter-email"
+        ).value = adopter.email;
+
+        document.querySelector(
+            "#edit-adopter-phone"
+        ).value = adopter.phone;
+
+        openDialog(
+            "edit-adopter-dialog"
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Error",
+            "Unable to load the adopter."
+        );
+    }
+}
+
+
+editAdopterForm.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+        if (!editAdopterForm.checkValidity()) {
+
+            editAdopterForm.reportValidity();
+
+            return;
+        }
+
+        const formData =
+            new FormData(editAdopterForm);
+
+        const adopterData = {
+
+            name: formData.get("name"),
+
+            email: formData.get("email"),
+
+            phone: formData.get("phone")
+        };
+
+        try {
+
+            await updateAdopter(
+                selectedAdopterId,
+                adopterData
+            );
+
+            closeDialog(
+                "edit-adopter-dialog"
+            );
+
+            selectedAdopterId = null;
+
+            await loadAdopters();
+
+            showMessage(
+                "Adopter updated",
+                "The adopter has been successfully updated."
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            const message =
+                error.response?.data?.detail ||
+                "Unable to update the adopter.";
+
+            closeDialog(
+                "edit-adopter-dialog"
+            );
+
+            showMessage(
+                "Error",
+                message
+            );
+        }
+    }
+);
+
+
+confirmDeleteAdopterButton.addEventListener(
+    "click",
+    async () => {
+
+        if (!selectedAdopterId) {
+            return;
+        }
+
+        try {
+
+            await deleteAdopter(
+                selectedAdopterId
+            );
+
+            closeDialog(
+                "delete-adopter-dialog"
+            );
+
+            selectedAdopterId = null;
+
+            await loadAdopters();
+
+            showMessage(
+                "Adopter deleted",
+                "The adopter has been successfully deleted."
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            const message =
+                error.response?.data?.detail ||
+                "Unable to delete the adopter.";
+
+            closeDialog(
+                "delete-adopter-dialog"
+            );
+
+            showMessage(
+                "Cannot delete adopter",
+                message
+            );
+        }
+    }
+);
+
+
+confirmCascadeDeleteAdopterButton.addEventListener(
+    "click",
+    async () => {
+
+        if (!selectedAdopterId) {
+            return;
+        }
+
+        try {
+
+            await deleteAdopterCascade(
+                selectedAdopterId
+            );
+
+            closeDialog(
+                "cascade-delete-adopter-dialog"
+            );
+
+            selectedAdopterId = null;
+
+            await loadAdopters();
+
+            showMessage(
+                "Adopter deleted",
+                "The adopter and its adoption interests have been deleted."
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            closeDialog(
+                "cascade-delete-adopter-dialog"
+            );
+
+            showMessage(
+                "Error",
+                "Unable to delete the adopter in cascade."
+            );
+        }
+    }
+);
+openCreateAdopterButton.addEventListener(
+    "click",
+    () => {
+
+        openDialog(
+            "create-adopter-dialog"
+        );
+
+    }
+);
+adopterForm.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+        if (!adopterForm.checkValidity()) {
+
+            adopterForm.reportValidity();
+
+            return;
+        }
+
+
+        const formData =
+            new FormData(adopterForm);
+
+
+        const adopterData = {
+
+            name: formData.get("name"),
+
+            email: formData.get("email"),
+
+            phone: formData.get("phone")
+
+        };
+
+
+        try {
+
+            await createAdopter(
+                adopterData
+            );
+
+            adopterForm.reset();
+
+            closeDialog(
+                "create-adopter-dialog"
+            );
+
+            await loadAdopters();
+
+            showMessage(
+                "Adopter added",
+                "The adopter has been successfully registered."
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            const message =
+                error.response?.data?.detail ||
+                "Unable to create the adopter.";
+
+            closeDialog(
+                "create-adopter-dialog"
+            );
+
+            showMessage(
+                "Error",
+                message
+            );
+        }
+
+    }
+);
+function renderShelters(shelters) {
+
+    shelterList.innerHTML = "";
+
+    if (shelters.length === 0) {
+
+        shelterList.innerHTML = `
+            <p>
+                There are no shelters registered yet.
+            </p>
+        `;
+
+        return;
+    }
+
+
+    shelters.forEach(shelter => {
+
+        const article =
+            document.createElement("article");
+
+        article.classList.add("card");
+
+
+        article.innerHTML = `
+
+            <header class="card-header">
+
+                <h4>
+                    ${shelter.name}
+                </h4>
+
+            </header>
+
+
+            <dl>
+
+                <div>
+                    <dt>City</dt>
+                    <dd>${shelter.city}</dd>
+                </div>
+
+                <div>
+                    <dt>Phone</dt>
+                    <dd>${shelter.phone}</dd>
+                </div>
+
+            </dl>
+
+
+            <footer class="card-actions">
+
+                <button
+                    type="button"
+                    class="primary-button edit-shelter-button"
+                    data-id="${shelter.id}"
+                >
+                    Edit
+                </button>
+
+
+                <button
+                    type="button"
+                    class="secondary-button delete-shelter-button"
+                    data-id="${shelter.id}"
+                >
+                    Delete
+                </button>
+
+
+                <button
+                    type="button"
+                    class="danger-button cascade-shelter-button"
+                    data-id="${shelter.id}"
+                >
+                    Delete cascade
+                </button>
+
+            </footer>
+        `;
+
+
+        shelterList.appendChild(article);
+
+    });
+
+
+    setupShelterButtons();
+}
+function setupShelterButtons() {
+
+    const editButtons =
+        document.querySelectorAll(
+            ".edit-shelter-button"
+        );
+
+    const deleteButtons =
+        document.querySelectorAll(
+            ".delete-shelter-button"
+        );
+
+    const cascadeButtons =
+        document.querySelectorAll(
+            ".cascade-shelter-button"
+        );
+
+
+    editButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const shelterId =
+                    Number(button.dataset.id);
+
+                openEditShelterDialog(
+                    shelterId
+                );
+
+            }
+        );
+
+    });
+
+
+    deleteButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                selectedShelterId =
+                    button.dataset.id;
+
+                openDialog(
+                    "delete-shelter-dialog"
+                );
+
+            }
+        );
+
+    });
+
+
+    cascadeButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                selectedShelterId =
+                    button.dataset.id;
+
+                openDialog(
+                    "cascade-delete-shelter-dialog"
+                );
+
+            }
+        );
+
+    });
+}
+openCreateShelterButton.addEventListener(
+    "click",
+    () => {
+
+        openDialog(
+            "create-shelter-dialog"
+        );
+
+    }
+);
+shelterForm.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+
+        if (!shelterForm.checkValidity()) {
+
+            shelterForm.reportValidity();
+
+            return;
+        }
+
+
+        const formData =
+            new FormData(shelterForm);
+
+
+        const shelterData = {
+
+            name: formData.get("name"),
+
+            city: formData.get("city"),
+
+            phone: formData.get("phone")
+
+        };
+
+
+        try {
+
+            await createShelter(
+                shelterData
+            );
+
+
+            shelterForm.reset();
+
+
+            closeDialog(
+                "create-shelter-dialog"
+            );
+
+
+            await loadShelters();
+
+
+            showMessage(
+                "Shelter added",
+                "The shelter has been successfully registered."
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            const message =
+                error.response?.data?.detail ||
+                "Unable to create the shelter.";
+
+            closeDialog(
+                "create-shelter-dialog"
+            );
+
+            showMessage(
+                "Error",
+                message
+            );
+        }
+
+    }
+);
+async function openEditShelterDialog(
+    shelterId
+) {
+
+    try {
+
+        const shelters =
+            await getShelters();
+
+        const shelter =
+            shelters.find(
+                shelter =>
+                    shelter.id === shelterId
+            );
+
+
+        if (!shelter) {
+
+            showMessage(
+                "Error",
+                "Shelter not found."
+            );
+
+            return;
+        }
+
+
+        selectedShelterId =
+            shelterId;
+
+
+        document.querySelector(
+            "#edit-shelter-name"
+        ).value = shelter.name;
+
+
+        document.querySelector(
+            "#edit-shelter-city"
+        ).value = shelter.city;
+
+
+        document.querySelector(
+            "#edit-shelter-phone"
+        ).value = shelter.phone;
+
+
+        openDialog(
+            "edit-shelter-dialog"
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Error",
+            "Unable to load the shelter."
+        );
+    }
+}
+editShelterForm.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+
+        if (!editShelterForm.checkValidity()) {
+
+            editShelterForm.reportValidity();
+
+            return;
+        }
+
+
+        const formData =
+            new FormData(editShelterForm);
+
+
+        const shelterData = {
+
+            name: formData.get("name"),
+
+            city: formData.get("city"),
+
+            phone: formData.get("phone")
+
+        };
+
+
+        try {
+
+            await updateShelter(
+                selectedShelterId,
+                shelterData
+            );
+
+
+            closeDialog(
+                "edit-shelter-dialog"
+            );
+
+
+            selectedShelterId = null;
+
+
+            await loadShelters();
+
+
+            showMessage(
+                "Shelter updated",
+                "The shelter has been successfully updated."
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            const message =
+                error.response?.data?.detail ||
+                "Unable to update the shelter.";
+
+            closeDialog(
+                "edit-shelter-dialog"
+            );
+
+            showMessage(
+                "Error",
+                message
+            );
+        }
+
+    }
+);
+confirmDeleteShelterButton.addEventListener(
+    "click",
+    async () => {
+
+        if (!selectedShelterId) {
+            return;
+        }
+
+
+        try {
+
+            await deleteShelter(
+                selectedShelterId
+            );
+
+
+            closeDialog(
+                "delete-shelter-dialog"
+            );
+
+
+            selectedShelterId = null;
+
+
+            await loadShelters();
+
+
+            showMessage(
+                "Shelter deleted",
+                "The shelter has been successfully deleted."
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            const message =
+                error.response?.data?.detail ||
+                "Unable to delete the shelter.";
+
+
+            closeDialog(
+                "delete-shelter-dialog"
+            );
+
+
+            showMessage(
+                "Cannot delete shelter",
+                message
+            );
+        }
+
+    }
+);
+confirmCascadeDeleteShelterButton.addEventListener(
+    "click",
+    async () => {
+
+        if (!selectedShelterId) {
+            return;
+        }
+
+
+        try {
+
+            await deleteShelterCascade(
+                selectedShelterId
+            );
+
+
+            closeDialog(
+                "cascade-delete-shelter-dialog"
+            );
+
+
+            selectedShelterId = null;
+
+
+            await loadShelters();
+
+
+            showMessage(
+                "Shelter deleted",
+                "The shelter and its animals have been deleted."
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            closeDialog(
+                "cascade-delete-shelter-dialog"
+            );
+
+
+            const message =
+                error.response?.data?.detail ||
+                "Unable to delete the shelter in cascade.";
+
+
+            showMessage(
+                "Error",
+                message
+            );
+        }
+
     }
 );

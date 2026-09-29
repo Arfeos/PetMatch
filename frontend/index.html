@@ -2,7 +2,9 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>PetMatch</title>
@@ -16,49 +18,68 @@
         }
     }
     </script>
+
 </head>
 
 <body>
+
+    <!-- HEADER -->
 
     <header class="site-header">
 
         <div class="container">
 
             <div class="brand">
-                <h1>PetMatch</h1>
+
+                <h1>
+                    PetMatch
+                </h1>
 
                 <p>
                     Find a new friend who needs a home.
                 </p>
+
             </div>
+
 
             <nav class="main-navigation" aria-label="Main navigation">
 
                 <button id="menu-toggle" class="menu-toggle" type="button" aria-expanded="false"
                     aria-controls="main-menu" aria-label="Open navigation menu">
+
                     <span></span>
                     <span></span>
                     <span></span>
+
                 </button>
 
+
                 <ul id="main-menu">
+
                     <li>
-                        <a href="#animals">Animals</a>
+                        <a href="#" data-section="animals">
+                            Animals
+                        </a>
                     </li>
 
                     <li>
-                        <a href="#adopters">Adopters</a>
+                        <a href="#" data-section="adopters">
+                            Adopters
+                        </a>
                     </li>
 
                     <li>
-                        <a href="#shelters">Shelters</a>
+                        <a href="#" data-section="shelters">
+                            Shelters
+                        </a>
                     </li>
 
                     <li>
-                        <a href="#adoption-interests">
+                        <a href="#" data-section="adoption-interests">
                             Adoption interests
                         </a>
                     </li>
+
                 </ul>
 
             </nav>
@@ -70,45 +91,72 @@
 
     <main>
 
-        <section id="animals" class="animals-section" aria-labelledby="animals-title">
+
+        <!-- ========================= -->
+        <!-- ANIMALS -->
+        <!-- ========================= -->
+
+        <section id="animals" class="entity-section page-section active" aria-labelledby="animals-title">
 
             <div class="container">
 
                 <header class="section-header">
 
-                    <h2 id="animals-title">
-                        Animals
-                    </h2>
+                    <div class="section-header-content">
 
-                    <p>
-                        Browse the animals currently registered
-                        in PetMatch.
-                    </p>
+                        <div>
 
-                    <button id="open-create-animal" class="primary-button" type="button">
-                        Add animal
-                    </button>
+                            <h2 id="animals-title">
+                                Animals
+                            </h2>
+
+                            <p>
+                                Browse the animals currently
+                                registered in PetMatch.
+                            </p>
+
+                        </div>
+
+
+                        <button id="open-create-animal" class="primary-button" type="button">
+                            Add animal
+                        </button>
+
+                    </div>
 
                 </header>
 
 
-                <section class="card-list-section" aria-labelledby="card-list-title">
+                <section class="card-list-section" aria-labelledby="animal-list-title">
 
                     <header>
-                        <h3 id="card-list-title">
+
+                        <h3 id="animal-list-title">
                             Animals looking for a home
                         </h3>
+
                     </header>
+
+
                     <hr class="section-divider">
-                    <div id="animal-list" class="card-list">
-                    </div>
+
+
+                    <div id="animal-list" class="card-list"></div>
 
                 </section>
 
             </div>
 
         </section>
-        <section id="adopters" class="entity-section" aria-labelledby="adopters-title">
+
+
+
+        <!-- ========================= -->
+        <!-- ADOPTERS -->
+        <!-- ========================= -->
+
+        <section id="adopters" class="entity-section page-section" aria-labelledby="adopters-title">
+
             <div class="container">
 
                 <header class="section-header">
@@ -122,10 +170,12 @@
                             </h2>
 
                             <p>
-                                Manage the people registered in PetMatch.
+                                Manage the people registered
+                                in PetMatch.
                             </p>
 
                         </div>
+
 
                         <button id="open-create-adopter" class="primary-button" type="button">
                             Add adopter
@@ -136,24 +186,82 @@
                 </header>
 
 
-                <section class="entity-list-section" aria-labelledby="adopter-list-title">
+                <section class="card-list-section" aria-labelledby="adopter-list-title">
 
                     <header>
+
                         <h3 id="adopter-list-title">
                             Registered adopters
                         </h3>
+
                     </header>
 
+
                     <hr class="section-divider">
+
 
                     <div id="adopter-list" class="card-list"></div>
 
                 </section>
 
             </div>
+
+        </section>
+        <section id="shelters" class="entity-section page-section">
+
+            <div class="container">
+
+                <header class="section-header">
+
+                    <div class="section-header-content">
+
+                        <div>
+
+                            <h2 id="shelters-title">
+                                Shelters
+                            </h2>
+
+                            <p>
+                                Manage the shelters registered in PetMatch.
+                            </p>
+
+                        </div>
+
+                        <button id="open-create-shelter" type="button" class="primary-button">
+                            Add shelter
+                        </button>
+
+                    </div>
+
+                </header>
+
+
+                <section class="card-list-section" aria-labelledby="shelters-list-title">
+
+                    <header>
+
+                        <h3 id="shelters-list-title">
+                            Registered shelters
+                        </h3>
+
+                    </header>
+
+                    <hr class="section-divider">
+
+                    <div id="shelter-list" class="card-list"></div>
+
+                </section>
+
+            </div>
+
         </section>
     </main>
 
+
+
+    <!-- ========================= -->
+    <!-- FOOTER -->
+    <!-- ========================= -->
 
     <footer class="site-footer">
 
@@ -168,36 +276,31 @@
     </footer>
 
 
+
+    <!-- ================================================= -->
     <!-- CREATE ANIMAL DIALOG -->
+    <!-- ================================================= -->
 
     <dialog id="create-animal-dialog">
 
         <form id="animal-form">
 
-            <header class="section-header">
+            <header class="dialog-header">
 
-                <div class="section-header-content">
+                <h2>
+                    Add animal
+                </h2>
 
-                    <div>
-                        <h2 id="animals-title">
-                            Animals
-                        </h2>
 
-                        <p>
-                            Browse the animals currently registered in PetMatch.
-                        </p>
-                    </div>
-
-                    <button id="open-create-animal" class="primary-button" type="button">
-                        Add animal
-                    </button>
-
-                </div>
+                <button type="button" class="close-dialog" data-dialog="create-animal-dialog" aria-label="Close">
+                    &times;
+                </button>
 
             </header>
 
 
             <div class="form-content">
+
 
                 <div class="form-group">
 
@@ -208,6 +311,7 @@
                     <input type="text" id="animal-name" name="name" minlength="2" maxlength="100" required>
 
                 </div>
+
 
 
                 <div class="form-group">
@@ -243,6 +347,7 @@
                 </div>
 
 
+
                 <div class="form-group">
 
                     <label for="animal-breed">
@@ -252,6 +357,7 @@
                     <input type="text" id="animal-breed" name="breed" minlength="2" maxlength="100" required>
 
                 </div>
+
 
 
                 <div class="form-group">
@@ -265,6 +371,7 @@
                 </div>
 
 
+
                 <div class="form-group">
 
                     <label for="animal-shelter">
@@ -272,12 +379,16 @@
                     </label>
 
                     <select id="animal-shelter" name="shelter_id" required>
+
                         <option value="">
                             Select a shelter
                         </option>
+
                     </select>
 
                 </div>
+
+
             </div>
 
 
@@ -286,6 +397,7 @@
                 <button type="button" class="secondary-button close-dialog" data-dialog="create-animal-dialog">
                     Cancel
                 </button>
+
 
                 <button type="submit" class="primary-button">
                     Add animal
@@ -296,13 +408,23 @@
         </form>
 
     </dialog>
+
+
+
+    <!-- ================================================= -->
+    <!-- EDIT ANIMAL DIALOG -->
+    <!-- ================================================= -->
+
     <dialog id="edit-animal-dialog">
 
         <form id="edit-animal-form">
 
             <header class="dialog-header">
 
-                <h2>Edit animal</h2>
+                <h2>
+                    Edit animal
+                </h2>
+
 
                 <button type="button" class="close-dialog" data-dialog="edit-animal-dialog" aria-label="Close">
                     &times;
@@ -310,7 +432,9 @@
 
             </header>
 
+
             <div class="form-content">
+
 
                 <div class="form-group">
 
@@ -322,6 +446,8 @@
 
                 </div>
 
+
+
                 <div class="form-group">
 
                     <label for="edit-animal-species">
@@ -329,6 +455,7 @@
                     </label>
 
                     <select id="edit-animal-species" name="species" required>
+
                         <option value="">
                             Select a species
                         </option>
@@ -353,6 +480,8 @@
 
                 </div>
 
+
+
                 <div class="form-group">
 
                     <label for="edit-animal-breed">
@@ -362,6 +491,8 @@
                     <input type="text" id="edit-animal-breed" name="breed" minlength="2" maxlength="100" required>
 
                 </div>
+
+
 
                 <div class="form-group">
 
@@ -373,6 +504,8 @@
 
                 </div>
 
+
+
                 <div class="form-group">
 
                     <label for="edit-animal-shelter">
@@ -380,12 +513,16 @@
                     </label>
 
                     <select id="edit-animal-shelter" name="shelter_id" required>
+
                         <option value="">
                             Select a shelter
                         </option>
+
                     </select>
 
                 </div>
+
+
 
                 <div class="form-group">
 
@@ -394,6 +531,7 @@
                     </label>
 
                     <select id="edit-animal-adopted" name="adopted" required>
+
                         <option value="false">
                             Available
                         </option>
@@ -401,17 +539,20 @@
                         <option value="true">
                             Adopted
                         </option>
+
                     </select>
 
                 </div>
 
             </div>
 
+
             <footer class="dialog-actions">
 
                 <button type="button" class="secondary-button close-dialog" data-dialog="edit-animal-dialog">
                     Cancel
                 </button>
+
 
                 <button type="submit" class="primary-button">
                     Save changes
@@ -423,7 +564,173 @@
 
     </dialog>
 
-    <!-- CONFIRM NORMAL DELETE -->
+
+
+    <!-- ================================================= -->
+    <!-- CREATE ADOPTER DIALOG -->
+    <!-- ================================================= -->
+
+    <dialog id="create-adopter-dialog">
+
+        <form id="adopter-form">
+
+            <header class="dialog-header">
+
+                <h2>
+                    Add adopter
+                </h2>
+
+
+                <button type="button" class="close-dialog" data-dialog="create-adopter-dialog" aria-label="Close">
+                    &times;
+                </button>
+
+            </header>
+
+
+            <div class="form-content">
+
+
+                <div class="form-group">
+
+                    <label for="adopter-name">
+                        Name
+                    </label>
+
+                    <input type="text" id="adopter-name" name="name" minlength="2" maxlength="100" required>
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="adopter-email">
+                        Email
+                    </label>
+
+                    <input type="email" id="adopter-email" name="email" maxlength="150" required>
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="adopter-phone">
+                        Phone
+                    </label>
+
+                    <input type="tel" id="adopter-phone" name="phone" minlength="9" maxlength="15" required>
+
+                </div>
+
+            </div>
+
+
+            <footer class="dialog-actions">
+
+                <button type="button" class="secondary-button close-dialog" data-dialog="create-adopter-dialog">
+                    Cancel
+                </button>
+
+
+                <button type="submit" class="primary-button">
+                    Add adopter
+                </button>
+
+            </footer>
+
+        </form>
+
+    </dialog>
+
+
+
+    <!-- ================================================= -->
+    <!-- EDIT ADOPTER DIALOG -->
+    <!-- ================================================= -->
+
+    <dialog id="edit-adopter-dialog">
+
+        <form id="edit-adopter-form">
+
+            <header class="dialog-header">
+
+                <h2>
+                    Edit adopter
+                </h2>
+
+
+                <button type="button" class="close-dialog" data-dialog="edit-adopter-dialog" aria-label="Close">
+                    &times;
+                </button>
+
+            </header>
+
+
+            <div class="form-content">
+
+
+                <div class="form-group">
+
+                    <label for="edit-adopter-name">
+                        Name
+                    </label>
+
+                    <input type="text" id="edit-adopter-name" name="name" minlength="2" maxlength="100" required>
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="edit-adopter-email">
+                        Email
+                    </label>
+
+                    <input type="email" id="edit-adopter-email" name="email" maxlength="150" required>
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="edit-adopter-phone">
+                        Phone
+                    </label>
+
+                    <input type="tel" id="edit-adopter-phone" name="phone" minlength="9" maxlength="15" required>
+
+                </div>
+
+            </div>
+
+
+            <footer class="dialog-actions">
+
+                <button type="button" class="secondary-button close-dialog" data-dialog="edit-adopter-dialog">
+                    Cancel
+                </button>
+
+
+                <button type="submit" class="primary-button">
+                    Save changes
+                </button>
+
+            </footer>
+
+        </form>
+
+    </dialog>
+
+
+
+    <!-- ================================================= -->
+    <!-- DELETE ANIMAL DIALOG -->
+    <!-- ================================================= -->
 
     <dialog id="delete-dialog">
 
@@ -435,26 +742,25 @@
                     Delete animal
                 </h2>
 
+
                 <button type="button" class="close-dialog" data-dialog="delete-dialog" aria-label="Close">
                     &times;
                 </button>
 
             </header>
 
+
             <p>
                 Are you sure you want to delete this animal?
             </p>
 
-            <p class="dialog-warning">
-                If this animal has adoption interests,
-                it cannot be deleted.
-            </p>
 
             <footer class="dialog-actions">
 
                 <button type="button" class="secondary-button close-dialog" data-dialog="delete-dialog">
                     Cancel
                 </button>
+
 
                 <button type="button" id="confirm-delete" class="danger-button">
                     Delete
@@ -467,7 +773,10 @@
     </dialog>
 
 
-    <!-- CONFIRM CASCADE DELETE -->
+
+    <!-- ================================================= -->
+    <!-- DELETE ANIMAL CASCADE DIALOG -->
+    <!-- ================================================= -->
 
     <dialog id="cascade-delete-dialog">
 
@@ -479,30 +788,36 @@
                     Delete animal and related data
                 </h2>
 
+
                 <button type="button" class="close-dialog" data-dialog="cascade-delete-dialog" aria-label="Close">
                     &times;
                 </button>
 
             </header>
 
+
             <p>
                 You are about to permanently delete this animal.
             </p>
+
 
             <p class="dialog-warning">
                 This will also delete all adoption interests
                 associated with this animal.
             </p>
 
+
             <p>
                 This action cannot be undone.
             </p>
+
 
             <footer class="dialog-actions">
 
                 <button type="button" class="secondary-button close-dialog" data-dialog="cascade-delete-dialog">
                     Cancel
                 </button>
+
 
                 <button type="button" id="confirm-cascade-delete" class="danger-button">
                     Delete everything
@@ -515,7 +830,114 @@
     </dialog>
 
 
+
+    <!-- ================================================= -->
+    <!-- DELETE ADOPTER DIALOG -->
+    <!-- ================================================= -->
+
+    <dialog id="delete-adopter-dialog">
+
+        <article>
+
+            <header class="dialog-header">
+
+                <h2>
+                    Delete adopter
+                </h2>
+
+
+                <button type="button" class="close-dialog" data-dialog="delete-adopter-dialog" aria-label="Close">
+                    &times;
+                </button>
+
+            </header>
+
+
+            <p>
+                Are you sure you want to delete this adopter?
+            </p>
+
+
+            <footer class="dialog-actions">
+
+                <button type="button" class="secondary-button close-dialog" data-dialog="delete-adopter-dialog">
+                    Cancel
+                </button>
+
+
+                <button type="button" id="confirm-delete-adopter" class="danger-button">
+                    Delete
+                </button>
+
+            </footer>
+
+        </article>
+
+    </dialog>
+
+
+
+    <!-- ================================================= -->
+    <!-- DELETE ADOPTER CASCADE DIALOG -->
+    <!-- ================================================= -->
+
+    <dialog id="cascade-delete-adopter-dialog">
+
+        <article>
+
+            <header class="dialog-header">
+
+                <h2>
+                    Delete adopter and related data
+                </h2>
+
+
+                <button type="button" class="close-dialog" data-dialog="cascade-delete-adopter-dialog"
+                    aria-label="Close">
+                    &times;
+                </button>
+
+            </header>
+
+
+            <p>
+                You are about to permanently delete this adopter.
+            </p>
+
+
+            <p class="dialog-warning">
+                This will also delete all adoption interests
+                associated with this adopter.
+            </p>
+
+
+            <p>
+                This action cannot be undone.
+            </p>
+
+
+            <footer class="dialog-actions">
+
+                <button type="button" class="secondary-button close-dialog" data-dialog="cascade-delete-adopter-dialog">
+                    Cancel
+                </button>
+
+
+                <button type="button" id="confirm-cascade-delete-adopter" class="danger-button">
+                    Delete everything
+                </button>
+
+            </footer>
+
+        </article>
+
+    </dialog>
+
+
+
+    <!-- ================================================= -->
     <!-- MESSAGE DIALOG -->
+    <!-- ================================================= -->
 
     <dialog id="message-dialog">
 
@@ -527,13 +949,16 @@
                     Message
                 </h2>
 
+
                 <button type="button" class="close-dialog" data-dialog="message-dialog" aria-label="Close">
                     &times;
                 </button>
 
             </header>
 
+
             <p id="message-content"></p>
+
 
             <footer class="dialog-actions">
 
@@ -546,6 +971,353 @@
         </article>
 
     </dialog>
+<!-- ================================================= -->
+<!-- CREATE SHELTER DIALOG -->
+<!-- ================================================= -->
+
+<dialog id="create-shelter-dialog">
+
+    <form id="shelter-form">
+
+        <header class="dialog-header">
+
+            <h2>
+                Add shelter
+            </h2>
+
+            <button
+                type="button"
+                class="close-dialog"
+                data-dialog="create-shelter-dialog"
+                aria-label="Close"
+            >
+                &times;
+            </button>
+
+        </header>
+
+
+        <div class="form-content">
+
+            <div class="form-group">
+
+                <label for="shelter-name">
+                    Name
+                </label>
+
+                <input
+                    type="text"
+                    id="shelter-name"
+                    name="name"
+                    minlength="2"
+                    maxlength="100"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="shelter-city">
+                    City
+                </label>
+
+                <input
+                    type="text"
+                    id="shelter-city"
+                    name="city"
+                    minlength="2"
+                    maxlength="100"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="shelter-phone">
+                    Phone
+                </label>
+
+                <input
+                    type="tel"
+                    id="shelter-phone"
+                    name="phone"
+                    minlength="9"
+                    maxlength="15"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <footer class="dialog-actions">
+
+            <button
+                type="button"
+                class="secondary-button close-dialog"
+                data-dialog="create-shelter-dialog"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="submit"
+                class="primary-button"
+            >
+                Add shelter
+            </button>
+
+        </footer>
+
+    </form>
+
+</dialog>
+
+
+<!-- ================================================= -->
+<!-- EDIT SHELTER DIALOG -->
+<!-- ================================================= -->
+
+<dialog id="edit-shelter-dialog">
+
+    <form id="edit-shelter-form">
+
+        <header class="dialog-header">
+
+            <h2>
+                Edit shelter
+            </h2>
+
+            <button
+                type="button"
+                class="close-dialog"
+                data-dialog="edit-shelter-dialog"
+                aria-label="Close"
+            >
+                &times;
+            </button>
+
+        </header>
+
+
+        <div class="form-content">
+
+            <div class="form-group">
+
+                <label for="edit-shelter-name">
+                    Name
+                </label>
+
+                <input
+                    type="text"
+                    id="edit-shelter-name"
+                    name="name"
+                    minlength="2"
+                    maxlength="100"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="edit-shelter-city">
+                    City
+                </label>
+
+                <input
+                    type="text"
+                    id="edit-shelter-city"
+                    name="city"
+                    minlength="2"
+                    maxlength="100"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="edit-shelter-phone">
+                    Phone
+                </label>
+
+                <input
+                    type="tel"
+                    id="edit-shelter-phone"
+                    name="phone"
+                    minlength="9"
+                    maxlength="15"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <footer class="dialog-actions">
+
+            <button
+                type="button"
+                class="secondary-button close-dialog"
+                data-dialog="edit-shelter-dialog"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="submit"
+                class="primary-button"
+            >
+                Save changes
+            </button>
+
+        </footer>
+
+    </form>
+
+</dialog>
+
+
+<!-- ================================================= -->
+<!-- DELETE SHELTER DIALOG -->
+<!-- ================================================= -->
+
+<dialog id="delete-shelter-dialog">
+
+    <article>
+
+        <header class="dialog-header">
+
+            <h2>
+                Delete shelter
+            </h2>
+
+            <button
+                type="button"
+                class="close-dialog"
+                data-dialog="delete-shelter-dialog"
+                aria-label="Close"
+            >
+                &times;
+            </button>
+
+        </header>
+
+
+        <p>
+            Are you sure you want to delete this shelter?
+        </p>
+
+
+        <p class="dialog-warning">
+            The shelter can only be deleted if it has no
+            associated animals.
+        </p>
+
+
+        <footer class="dialog-actions">
+
+            <button
+                type="button"
+                class="secondary-button close-dialog"
+                data-dialog="delete-shelter-dialog"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                id="confirm-delete-shelter"
+                class="danger-button"
+            >
+                Delete
+            </button>
+
+        </footer>
+
+    </article>
+
+</dialog>
+
+
+<!-- ================================================= -->
+<!-- DELETE SHELTER CASCADE DIALOG -->
+<!-- ================================================= -->
+
+<dialog id="cascade-delete-shelter-dialog">
+
+    <article>
+
+        <header class="dialog-header">
+
+            <h2>
+                Delete shelter and related data
+            </h2>
+
+            <button
+                type="button"
+                class="close-dialog"
+                data-dialog="cascade-delete-shelter-dialog"
+                aria-label="Close"
+            >
+                &times;
+            </button>
+
+        </header>
+
+
+        <p>
+            You are about to permanently delete this shelter.
+        </p>
+
+
+        <p class="dialog-warning">
+            This will also delete all animals associated
+            with this shelter.
+        </p>
+
+
+        <p>
+            This action cannot be undone.
+        </p>
+
+
+        <footer class="dialog-actions">
+
+            <button
+                type="button"
+                class="secondary-button close-dialog"
+                data-dialog="cascade-delete-shelter-dialog"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                id="confirm-cascade-delete-shelter"
+                class="danger-button"
+            >
+                Delete everything
+            </button>
+
+        </footer>
+
+    </article>
+
+</dialog>
 
 
     <script type="module" src="./src/js/app.js"></script>
