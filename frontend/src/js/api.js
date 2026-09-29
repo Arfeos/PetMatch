@@ -44,6 +44,15 @@ export async function createAdopter(adopterData) {
 
     return response.data;
 }
+export async function createShelter(shelterData) {
+    const response = await axios.post(
+        `${API_URL}/shelters/`,
+        shelterData
+    );
+
+    return response.data;
+}
+
 export async function updateAnimal(
     animalId,
     animalData
@@ -55,14 +64,20 @@ export async function updateAnimal(
 
     return response.data;
 }
-export async function updateAdopter(
-    adopterId,
-    adopterData
-) {
+export async function updateAdopter(adopterId,adopterData) {
 
     const response = await axios.put(
         `${API_URL}/adopters/${adopterId}`,
         adopterData
+    );
+
+    return response.data;
+}
+
+export async function updateShelter(id, shelterData) {
+    const response = await axios.put(
+        `${API_URL}/shelters/${id}`,
+        shelterData
     );
 
     return response.data;
@@ -91,4 +106,11 @@ export async function deleteAdopterCascade(
     return await axios.delete(
         `${API_URL}/adopters/${adopterId}/cascade`
     );
+}
+export async function deleteShelter(id) {
+    return await axios.delete(`${API_URL}/shelters/${id}`);
+}
+
+export async function deleteShelterCascade(id) {
+    return await axios.delete(`${API_URL}/shelters/${id}/cascade`);
 }
