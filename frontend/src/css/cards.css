@@ -1,0 +1,77 @@
+.section-divider {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 1.5rem 0 2rem;
+}
+.card-list {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(280px, 1fr)
+    );
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.card {
+    width: 100%;
+    max-width: 380px;
+    justify-self: center;
+
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 1.5rem;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.card-header h4 {
+    font-size: 1.4rem;
+}
+
+.card-badge {
+    text-transform: capitalize;
+    background: #eee;
+    border-radius: 20px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.85rem;
+}
+
+.card dl {
+    display: grid;
+    gap: 0.7rem;
+    margin-bottom: 1.5rem;
+}
+
+.card dl div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.card dt {
+    font-weight: 600;
+}
+
+.card dd {
+    margin: 0;
+    text-align: right;
+}
+
+.card-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.card-actions button {
+    flex: 1;
+}

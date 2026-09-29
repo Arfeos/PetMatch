@@ -1,0 +1,63 @@
+.site-header {
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 2rem 0;
+}
+
+.site-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.brand h1 {
+    font-size: 2.5rem;
+}
+
+.brand p {
+    color: #666;
+}
+
+.main-navigation ul {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    list-style: none;
+}
+
+.main-navigation a {
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.main-navigation a:hover {
+    text-decoration: underline;
+}
+
+.menu-toggle {
+    display: none;
+
+    border: none;
+    background: transparent;
+
+    width: 42px;
+    height: 42px;
+
+    padding: 0;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.menu-toggle span {
+    display: block;
+
+    width: 25px;
+    height: 3px;
+
+    background: #222;
+    border-radius: 2px;
+}

@@ -1,0 +1,75 @@
+dialog {
+    width: min(500px, 90%);
+    border: none;
+    border-radius: 12px;
+    padding: 0;
+    margin: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.55);
+}
+
+
+dialog form,
+dialog article {
+    padding: 1.5rem;
+}
+
+
+.dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+
+.dialog-header h2 {
+    font-size: 1.4rem;
+}
+
+
+.close-dialog {
+    border: none;
+    background: transparent;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+}
+
+
+.close-dialog:hover {
+    background: #eee;
+    border-radius: 5px;
+}
+
+
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.7rem;
+    margin-top: 1.5rem;
+}
+
+
+.dialog-warning {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    border-radius: 6px;
+    background: #fff3cd;
+}
+
+
+#cascade-delete-dialog {
+    border: 2px solid #b42318;
+}
+
+
+#cascade-delete-dialog .dialog-header h2 {
+    color: #b42318;
+}

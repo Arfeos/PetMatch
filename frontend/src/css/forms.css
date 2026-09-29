@@ -1,0 +1,75 @@
+.form-content {
+    display: grid;
+    gap: 1rem;
+}
+
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+
+.form-group label {
+    font-weight: 600;
+}
+
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.7rem;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    background: #fff;
+}
+
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: 2px solid #555;
+    outline-offset: 1px;
+}
+
+
+.primary-button,
+.secondary-button,
+.danger-button {
+    border: none;
+    border-radius: 6px;
+    padding: 0.7rem 1.1rem;
+}
+
+
+.primary-button {
+    background: #222;
+    color: #fff;
+}
+
+
+.secondary-button {
+    background: #e5e5e5;
+    color: #222;
+}
+
+
+.danger-button {
+    background: #b42318;
+    color: #fff;
+}
+
+
+.primary-button:hover {
+    background: #444;
+}
+
+
+.secondary-button:hover {
+    background: #d5d5d5;
+}
+
+
+.danger-button:hover {
+    background: #8f1c13;
+}
