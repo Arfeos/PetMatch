@@ -2,6 +2,7 @@ import {
     getAnimals,
     getShelters,
     getAdopters,
+    getAdoptionInterests,
     createAnimal,
     updateAnimal,
     deleteAnimal,
@@ -13,7 +14,10 @@ import {
     createShelter,
     updateShelter,
     deleteShelter,
-    deleteShelterCascade
+    deleteShelterCascade,
+    createAdoptionInterest,
+    updateAdoptionInterest,
+    deleteAdoptionInterest
 } from "./api.js";
 
 
@@ -26,9 +30,11 @@ import {
 
 
 let shelters = [];
-
+let animals = [];
+let adopters = [];
 let selectedAnimalId = null;
 let selectedAdopterId = null;
+let selectedAdoptionInterestId = null;
 const animalList = document.querySelector(
     "#animal-list"
 );
@@ -108,6 +114,20 @@ const confirmCascadeDeleteShelterButton =
     document.querySelector(
         "#confirm-cascade-delete-shelter"
     );
+    const adoptionInterestList =
+    document.querySelector("#adoption-interest-list");
+
+const adoptionInterestForm =
+    document.querySelector("#adoption-interest-form");
+
+const editAdoptionInterestForm =
+    document.querySelector("#edit-adoption-interest-form");
+
+const openCreateAdoptionInterestButton =
+    document.querySelector("#open-create-adoption-interest");
+
+const confirmDeleteAdoptionInterestButton =
+    document.querySelector("#confirm-delete-adoption-interest");
 loadData();
 
 setupDialogButtons();
@@ -163,6 +183,106 @@ function populateShelterSelects() {
 
     });
 }
+function populateAdoptionInterestSelects() {
+
+    const createAdopterSelect =
+        document.querySelector(
+            "#adoption-interest-adopter"
+        );
+
+    const editAdopterSelect =
+        document.querySelector(
+            "#edit-adoption-interest-adopter"
+        );
+
+    const createAnimalSelect =
+        document.querySelector(
+            "#adoption-interest-animal"
+        );
+
+    const editAnimalSelect =
+        document.querySelector(
+            "#edit-adoption-interest-animal"
+        );
+
+
+    createAdopterSelect.innerHTML = `
+        <option value="">
+            Select an adopter
+        </option>
+    `;
+
+    editAdopterSelect.innerHTML = `
+        <option value="">
+            Select an adopter
+        </option>
+    `;
+
+
+    createAnimalSelect.innerHTML = `
+        <option value="">
+            Select an animal
+        </option>
+    `;
+
+    editAnimalSelect.innerHTML = `
+        <option value="">
+            Select an animal
+        </option>
+    `;
+
+
+    adopters.forEach(adopter => {
+
+        const createOption =
+            document.createElement("option");
+
+        createOption.value = adopter.id;
+        createOption.textContent = adopter.name;
+
+        createAdopterSelect.appendChild(
+            createOption
+        );
+
+
+        const editOption =
+            document.createElement("option");
+
+        editOption.value = adopter.id;
+        editOption.textContent = adopter.name;
+
+        editAdopterSelect.appendChild(
+            editOption
+        );
+
+    });
+
+
+    animals.forEach(animal => {
+
+        const createOption =
+            document.createElement("option");
+
+        createOption.value = animal.id;
+        createOption.textContent = animal.name;
+
+        createAnimalSelect.appendChild(
+            createOption
+        );
+
+
+        const editOption =
+            document.createElement("option");
+
+        editOption.value = animal.id;
+        editOption.textContent = animal.name;
+
+        editAnimalSelect.appendChild(
+            editOption
+        );
+
+    });
+}
 function getShelterName(shelterId) {
 
     const shelter = shelters.find(
@@ -172,6 +292,24 @@ function getShelterName(shelterId) {
     return shelter
         ? shelter.name
         : "Unknown shelter";
+}
+function getAnimalName(animalId) {
+    const animal = animals.find(
+        animal => animal.id === animalId
+    );
+
+    return animal
+        ? animal.name
+        : "Unknown animal";
+}
+function getAdopterName(adopterId) {
+    const adopter = adopters.find(
+        adopter => adopter.id === adopterId
+    );
+
+    return adopter
+        ? adopter.name
+        : "Unknown adopter";
 }
 openCreateAnimalButton.addEventListener(
     "click",
@@ -264,8 +402,9 @@ async function loadData() {
         await loadAnimals();
 
         await loadAdopters();
-        
+
         await loadShelters();
+        await loadAdoptionInterests();
 
     } catch (error) {
 
@@ -301,7 +440,7 @@ async function loadAnimals() {
 
     try {
 
-        const animals = await getAnimals();
+        animals = await getAnimals();
 
         renderAnimals(animals);
 
@@ -319,7 +458,7 @@ async function loadAdopters() {
 
     try {
 
-        const adopters = await getAdopters();
+        adopters = await getAdopters();
 
         renderAdopters(adopters);
 
@@ -334,7 +473,27 @@ async function loadAdopters() {
     }
 }
 
+async function loadAdoptionInterests() {
 
+    try {
+
+        const adoptionInterests =
+            await getAdoptionInterests();
+
+        renderAdoptionInterests(
+            adoptionInterests
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Error",
+            "Unable to load adoption interests."
+        );
+    }
+}
 
 function renderAnimals(animals) {
 
@@ -498,21 +657,21 @@ function setupAnimalButtons() {
     });
     editButtons.forEach(button => {
 
-    button.addEventListener(
-        "click",
-        () => {
+        button.addEventListener(
+            "click",
+            () => {
 
-            const animalId =
-                Number(button.dataset.id);
+                const animalId =
+                    Number(button.dataset.id);
 
-            openEditAnimalDialog(
-                animalId
-            );
+                openEditAnimalDialog(
+                    animalId
+                );
 
-        }
-    );
+            }
+        );
 
-});
+    });
 }
 
 
@@ -1787,6 +1946,442 @@ confirmCascadeDeleteShelterButton.addEventListener(
             const message =
                 error.response?.data?.detail ||
                 "Unable to delete the shelter in cascade.";
+
+
+            showMessage(
+                "Error",
+                message
+            );
+        }
+
+    }
+);
+function renderAdoptionInterests(
+    adoptionInterests
+) {
+
+    adoptionInterestList.innerHTML = "";
+
+
+    if (adoptionInterests.length === 0) {
+
+        adoptionInterestList.innerHTML = `
+            <p>
+                There are no adoption interests registered yet.
+            </p>
+        `;
+
+        return;
+    }
+
+
+    adoptionInterests.forEach(
+        adoptionInterest => {
+
+            const article =
+                document.createElement("article");
+
+            article.classList.add("card");
+
+
+            article.innerHTML = `
+
+                <header class="card-header">
+
+                    <h4>
+                        Adoption interest
+                    </h4>
+
+                    <span class="card-badge">
+                        ${adoptionInterest.status}
+                    </span>
+
+                </header>
+
+
+                <dl>
+
+                    <div>
+                        <dt>Adopter</dt>
+                        <dd>
+                            ${getAdopterName(
+                                adoptionInterest.adopter_id
+                            )}
+                        </dd>
+                    </div>
+
+
+                    <div>
+                        <dt>Animal</dt>
+                        <dd>
+                            ${getAnimalName(
+                                adoptionInterest.animal_id
+                            )}
+                        </dd>
+                    </div>
+
+
+                    <div>
+                        <dt>Date</dt>
+                        <dd>
+                            ${adoptionInterest.date}
+                        </dd>
+                    </div>
+
+
+                    <div>
+                        <dt>Status</dt>
+                        <dd>
+                            ${adoptionInterest.status}
+                        </dd>
+                    </div>
+
+                </dl>
+
+
+                <footer class="card-actions">
+
+                    <button
+                        type="button"
+                        class="primary-button edit-adoption-interest-button"
+                        data-id="${adoptionInterest.id}"
+                    >
+                        Edit
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="secondary-button delete-adoption-interest-button"
+                        data-id="${adoptionInterest.id}"
+                    >
+                        Delete
+                    </button>
+
+                </footer>
+            `;
+
+
+            adoptionInterestList.appendChild(
+                article
+            );
+
+        }
+    );
+
+
+    setupAdoptionInterestButtons();
+}
+function setupAdoptionInterestButtons() {
+
+    const editButtons =
+        document.querySelectorAll(
+            ".edit-adoption-interest-button"
+        );
+
+    const deleteButtons =
+        document.querySelectorAll(
+            ".delete-adoption-interest-button"
+        );
+
+
+    editButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const adoptionInterestId =
+                    Number(button.dataset.id);
+
+                openEditAdoptionInterestDialog(
+                    adoptionInterestId
+                );
+
+            }
+        );
+
+    });
+
+
+    deleteButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                selectedAdoptionInterestId =
+                    button.dataset.id;
+
+                openDialog(
+                    "delete-adoption-interest-dialog"
+                );
+
+            }
+        );
+
+    });
+}
+openCreateAdoptionInterestButton.addEventListener(
+    "click",
+    () => {
+
+        populateAdoptionInterestSelects();
+
+        openDialog(
+            "create-adoption-interest-dialog"
+        );
+
+    }
+);
+openCreateAdoptionInterestButton.addEventListener(
+    "click",
+    () => {
+
+        populateAdoptionInterestSelects();
+
+        openDialog(
+            "create-adoption-interest-dialog"
+        );
+
+    }
+);
+async function openEditAdoptionInterestDialog(
+    adoptionInterestId
+) {
+
+    try {
+
+        const adoptionInterests =
+            await getAdoptionInterests();
+
+
+        const adoptionInterest =
+            adoptionInterests.find(
+                adoptionInterest =>
+                    adoptionInterest.id === adoptionInterestId
+            );
+
+
+        if (!adoptionInterest) {
+
+            showMessage(
+                "Error",
+                "Adoption interest not found."
+            );
+
+            return;
+        }
+
+
+        selectedAdoptionInterestId =
+            adoptionInterestId;
+
+
+        populateAdoptionInterestSelects();
+
+
+        document.querySelector(
+            "#edit-adoption-interest-adopter"
+        ).value =
+            adoptionInterest.adopter_id;
+
+
+        document.querySelector(
+            "#edit-adoption-interest-animal"
+        ).value =
+            adoptionInterest.animal_id;
+
+
+        document.querySelector(
+            "#edit-adoption-interest-date"
+        ).value =
+            adoptionInterest.date;
+
+
+        document.querySelector(
+            "#edit-adoption-interest-status"
+        ).value =
+            adoptionInterest.status;
+
+
+        openDialog(
+            "edit-adoption-interest-dialog"
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Error",
+            "Unable to load the adoption interest."
+        );
+    }
+}
+editAdoptionInterestForm.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+
+        if (!editAdoptionInterestForm.checkValidity()) {
+
+            editAdoptionInterestForm.reportValidity();
+
+            return;
+        }
+
+
+        const formData =
+            new FormData(
+                editAdoptionInterestForm
+            );
+
+
+        const adoptionInterestData = {
+
+            adopter_id: Number(
+                formData.get("adopter_id")
+            ),
+
+            animal_id: Number(
+                formData.get("animal_id")
+            ),
+
+            date: formData.get("date"),
+
+            status: formData.get("status")
+
+        };
+
+
+        try {
+
+            await updateAdoptionInterest(
+                selectedAdoptionInterestId,
+                adoptionInterestData
+            );
+
+
+            closeDialog(
+                "edit-adoption-interest-dialog"
+            );
+
+
+            selectedAdoptionInterestId = null;
+
+
+            await loadAdoptionInterests();
+
+
+            showMessage(
+                "Adoption interest updated",
+                "The adoption interest has been successfully updated."
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            const message =
+                error.response?.data?.detail ||
+                "Unable to update the adoption interest.";
+
+
+            closeDialog(
+                "edit-adoption-interest-dialog"
+            );
+
+
+            showMessage(
+                "Error",
+                message
+            );
+        }
+
+    }
+);
+editAdoptionInterestForm.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+
+        if (!editAdoptionInterestForm.checkValidity()) {
+
+            editAdoptionInterestForm.reportValidity();
+
+            return;
+        }
+
+
+        const formData =
+            new FormData(
+                editAdoptionInterestForm
+            );
+
+
+        const adoptionInterestData = {
+
+            adopter_id: Number(
+                formData.get("adopter_id")
+            ),
+
+            animal_id: Number(
+                formData.get("animal_id")
+            ),
+
+            date: formData.get("date"),
+
+            status: formData.get("status")
+
+        };
+
+
+        try {
+
+            await updateAdoptionInterest(
+                selectedAdoptionInterestId,
+                adoptionInterestData
+            );
+
+
+            closeDialog(
+                "edit-adoption-interest-dialog"
+            );
+
+
+            selectedAdoptionInterestId = null;
+
+
+            await loadAdoptionInterests();
+
+
+            showMessage(
+                "Adoption interest updated",
+                "The adoption interest has been successfully updated."
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+
+            const message =
+                error.response?.data?.detail ||
+                "Unable to update the adoption interest.";
+
+
+            closeDialog(
+                "edit-adoption-interest-dialog"
+            );
 
 
             showMessage(
