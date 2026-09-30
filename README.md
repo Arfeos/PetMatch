@@ -79,7 +79,47 @@ Relationships:
 -   One animal can have many adoption interests.
 -   `AdoptionInterest` is the intermediate entity between adopters and
     animals.
+    ## Entity-Relationship Diagram
 
+```mermaid
+erDiagram
+
+    SHELTER ||--o{ ANIMAL : contains
+    ANIMAL ||--o{ ADOPTION_INTEREST : receives
+    ADOPTER ||--o{ ADOPTION_INTEREST : creates
+
+    SHELTER {
+        int id PK
+        string name
+        string city
+        string phone
+    }
+
+    ANIMAL {
+        int id PK
+        string name
+        Species species
+        string breed
+        int age
+        boolean adopted
+        int shelter_id FK
+    }
+
+    ADOPTER {
+        int id PK
+        string name
+        string email UK
+        string phone
+    }
+
+    ADOPTION_INTEREST {
+        int id PK
+        int adopter_id FK
+        int animal_id FK
+        date date
+        AdoptionStatus status
+    }
+```
 ## Requirements
 
 Install:
@@ -399,7 +439,47 @@ Relaciones:
 -   Un animal puede tener muchos intereses de adopción.
 -   `AdoptionInterest` actúa como entidad intermedia entre adoptantes y
     animales.
+    ## Diagrama Entidad-Relación
 
+```mermaid
+erDiagram
+
+    SHELTER ||--o{ ANIMAL : animales
+    ANIMAL ||--o{ ADOPTION_INTEREST : recibe
+    ADOPTER ||--o{ ADOPTION_INTEREST : crea
+
+    SHELTER {
+        int id PK
+        string name
+        string city
+        string phone
+    }
+
+    ANIMAL {
+        int id PK
+        string name
+        Species species
+        string breed
+        int age
+        boolean adopted
+        int shelter_id FK
+    }
+
+    ADOPTER {
+        int id PK
+        string name
+        string email UK
+        string phone
+    }
+
+    ADOPTION_INTEREST {
+        int id PK
+        int adopter_id FK
+        int animal_id FK
+        date date
+        AdoptionStatus status
+    }
+```
 ## Requisitos
 
 Es necesario tener instalado:
