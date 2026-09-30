@@ -118,6 +118,37 @@ def update_adoption_interest(
             detail="Adoption interest not found"
         )
 
+    if adoption_interest_data.adopter_id is not None:
+
+        adopter = db.query(Adopter).filter(
+            Adopter.id == adoption_interest_data.adopter_id
+        ).first()
+
+        if adopter is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Adopter not found"
+            )
+
+        adoption_interest.adopter_id = adoption_interest_data.adopter_id
+
+    if adoption_interest_data.animal_id is not None:
+
+        animal = db.query(Animal).filter(
+            Animal.id == adoption_interest_data.animal_id
+        ).first()
+
+        if animal is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Animal not found"
+            )
+
+        adoption_interest.animal_id = adoption_interest_data.animal_id
+
+    if adoption_interest_data.date is not None:
+        adoption_interest.date = adoption_interest_data.date
+
     if adoption_interest_data.status is not None:
         adoption_interest.status = adoption_interest_data.status
 

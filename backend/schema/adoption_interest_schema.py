@@ -38,7 +38,9 @@ class AdoptionInterestCreate(AdoptionInterestBase):
 
 
 class AdoptionInterestUpdate(BaseModel):
-
+    adopter_id: Optional[int] = None
+    animal_id: Optional[int] = None
+    date: Optional[Date] = None
     status: Optional[AdoptionStatus] = None
 
 

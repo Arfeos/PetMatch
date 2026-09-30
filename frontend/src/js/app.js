@@ -2134,16 +2134,113 @@ openCreateAdoptionInterestButton.addEventListener(
 
     }
 );
-openCreateAdoptionInterestButton.addEventListener(
+adoptionInterestForm.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+        if (!adoptionInterestForm.checkValidity()) {
+            adoptionInterestForm.reportValidity();
+            return;
+        }
+
+        const formData =
+            new FormData(adoptionInterestForm);
+
+        const adoptionInterestData = {
+            adopter_id: Number(
+                formData.get("adopter_id")
+            ),
+            animal_id: Number(
+                formData.get("animal_id")
+            ),
+            date: formData.get("date"),
+            status: formData.get("status")
+        };
+
+        try {
+
+            await createAdoptionInterest(
+                adoptionInterestData
+            );
+
+            adoptionInterestForm.reset();
+
+            closeDialog(
+                "create-adoption-interest-dialog"
+            );
+
+            await loadAdoptionInterests();
+
+            showMessage(
+                "Adoption interest added",
+                "The adoption interest has been successfully registered."
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            const message =
+                error.response?.data?.detail ||
+                "Unable to create the adoption interest.";
+
+            closeDialog(
+                "create-adoption-interest-dialog"
+            );
+
+            showMessage(
+                "Error",
+                message
+            );
+        }
+    }
+);
+confirmDeleteAdoptionInterestButton.addEventListener(
     "click",
-    () => {
+    async () => {
 
-        populateAdoptionInterestSelects();
+        if (!selectedAdoptionInterestId) {
+            return;
+        }
 
-        openDialog(
-            "create-adoption-interest-dialog"
-        );
+        try {
 
+            await deleteAdoptionInterest(
+                selectedAdoptionInterestId
+            );
+
+            closeDialog(
+                "delete-adoption-interest-dialog"
+            );
+
+            selectedAdoptionInterestId = null;
+
+            await loadAdoptionInterests();
+
+            showMessage(
+                "Adoption interest deleted",
+                "The adoption interest has been successfully deleted."
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            const message =
+                error.response?.data?.detail ||
+                "Unable to delete the adoption interest.";
+
+            closeDialog(
+                "delete-adoption-interest-dialog"
+            );
+
+            showMessage(
+                "Error",
+                message
+            );
+        }
     }
 );
 async function openEditAdoptionInterestDialog(
@@ -2220,92 +2317,6 @@ async function openEditAdoptionInterestDialog(
         );
     }
 }
-editAdoptionInterestForm.addEventListener(
-    "submit",
-    async event => {
-
-        event.preventDefault();
-
-
-        if (!editAdoptionInterestForm.checkValidity()) {
-
-            editAdoptionInterestForm.reportValidity();
-
-            return;
-        }
-
-
-        const formData =
-            new FormData(
-                editAdoptionInterestForm
-            );
-
-
-        const adoptionInterestData = {
-
-            adopter_id: Number(
-                formData.get("adopter_id")
-            ),
-
-            animal_id: Number(
-                formData.get("animal_id")
-            ),
-
-            date: formData.get("date"),
-
-            status: formData.get("status")
-
-        };
-
-
-        try {
-
-            await updateAdoptionInterest(
-                selectedAdoptionInterestId,
-                adoptionInterestData
-            );
-
-
-            closeDialog(
-                "edit-adoption-interest-dialog"
-            );
-
-
-            selectedAdoptionInterestId = null;
-
-
-            await loadAdoptionInterests();
-
-
-            showMessage(
-                "Adoption interest updated",
-                "The adoption interest has been successfully updated."
-            );
-
-
-        } catch (error) {
-
-            console.error(error);
-
-
-            const message =
-                error.response?.data?.detail ||
-                "Unable to update the adoption interest.";
-
-
-            closeDialog(
-                "edit-adoption-interest-dialog"
-            );
-
-
-            showMessage(
-                "Error",
-                message
-            );
-        }
-
-    }
-);
 editAdoptionInterestForm.addEventListener(
     "submit",
     async event => {
